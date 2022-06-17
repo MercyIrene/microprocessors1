@@ -1,0 +1,38 @@
+	.NOLIST                      //Turn off to decrease size of list
+	.INCLUDE "M328PDEF.INC"		//Include device file
+	.LIST						//Turn on
+
+	.CSEG
+	.ORG 0*0000					//Beginning of Program Memory
+
+	MAIN:
+			LDI		R16, HIGH(RAMEND)  //Initialized the stack
+			OUT		SPH, R16
+			LDI		R16, LOW(RAMEND)
+			OUT		SPL, R16
+			CLR		R16
+
+			LDI		R16, 255	//Sets ports as output
+			OUT		DDRB, R16
+
+REPEAT:
+			SBI		PORTB, 5		//Sets pin (P85) high
+			RCALL			DELAY
+			CBI		PORTB, 5		//Sets pin (P85) low
+			RCALL			DELAY
+			RJMP			REPEAT			//Repeat continuously
+
+DELAY:				LDI		R16, 250		//Create a delay of 43ms
+LOOP1:				LDI		R17, 43
+LOOP2:				LDI		R18, 16
+LOOP3:				NOP
+		
+		DEC			R18
+		BRNE				LOOP3
+
+		DEC			R17
+		BRNE				LOOP2
+
+		DEC			R16
+		BRNE				LOOP1
+		RET

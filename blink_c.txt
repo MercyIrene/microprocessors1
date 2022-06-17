@@ -1,0 +1,23 @@
+#ifndef F_CPU
+#define F_CPU 16000000  // 16MHz clock frequency
+#endif
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+
+int main(void)
+{
+	/*To be executed once*/
+	DDRB	|= 1 << PINB5;  //shifts 1 in 5 positions in the DDRB register, declares it as an output pin (pin 5 that is)
+	
+	while (1)
+	{
+		PORTB |= 1 << PINB5; //switch on port B pin 5
+		_delay_ms(43);
+		PORTB &= ~1 << PINB5; //switch off pin 5
+		_delay_ms(43);
+		//Will be repeated
+	}
+	
+}
